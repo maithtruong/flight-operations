@@ -1,3 +1,11 @@
+# Python cache
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+
+# Test files
 test/*
 docs/*
+
+# Environment files
 .env

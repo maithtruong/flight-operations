@@ -6,7 +6,7 @@ import pandas as pd
 import reverse_geocode as rg
 
 from datetime import datetime
-from airflow.decorators import dag, task
+from airflow.sdk import dag, task
 from airflow.sdk import get_current_context
 
 @dag(

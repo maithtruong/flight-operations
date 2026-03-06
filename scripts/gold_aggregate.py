@@ -2,7 +2,7 @@ import pandas as pd
 from pathlib import Path
 from datetime import datetime
 
-def run_gold_aggregate(**context):
+def run_gold_aggregate(context):
 
     logical_date = context['logical_date']
 

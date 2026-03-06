@@ -3,6 +3,8 @@ services:
     image: postgres:17
     container_name: airflow-postgres
     restart: always
+    networks:
+      - airflow-network
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -11,17 +13,26 @@ services:
       - postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
+      interval: 5s
+      retries: 5
 
   airflow-webserver:
-    image: apache/airflow:3.1.0
+    build: .
     container_name: airflow-webserver
+    restart: always
+    networks:
+      - airflow-network
     depends_on:
-      - airflow-postgres
+      airflow-postgres:
+        condition: service_healthy
     environment:
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@airflow-postgres:5432/${POSTGRES_DB}
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: "admin:admin"
       PYTHONPATH: /opt/airflow
-      AIRFLOW__CORE__DAG_DISCOVERY_SAFE_MODE: False
+      AIRFLOW__CORE__DAG_DISCOVERY_SAFE_MODE: "False"
     ports:
       - "8080:8080"
     volumes:
@@ -37,17 +48,21 @@ services:
       "
 
   airflow-scheduler:
-    image: apache/airflow:3.1.0
+    build: .
     container_name: airflow-scheduler
+    restart: always
+    networks:
+      - airflow-network
     depends_on:
-      - airflow-postgres
-      - airflow-webserver
+      airflow-postgres:
+        condition: service_healthy
     environment:
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@airflow-postgres:5432/${POSTGRES_DB}
-      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: admin:admin
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: "admin:admin"
+      AIRFLOW__EXECUTION_API__EXECUTION_API_SERVER_URL: "http://airflow-webserver:8080/execution/"
       PYTHONPATH: /opt/airflow
-      AIRFLOW__CORE__DAG_DISCOVERY_SAFE_MODE: False
+      AIRFLOW__CORE__DAG_DISCOVERY_SAFE_MODE: "False"
     volumes:
       - ./dags:/opt/airflow/dags
       - ./scripts:/opt/airflow/scripts
@@ -55,6 +70,33 @@ services:
       - ./plugins:/opt/airflow/plugins
       - ./data:/opt/airflow/data
     command: scheduler
-  
+
+  airflow-dag-processor:
+    build: .
+    container_name: airflow-dag-processor
+    restart: always
+    networks:
+      - airflow-network
+    depends_on:
+      airflow-postgres:
+        condition: service_healthy
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@airflow-postgres:5432/${POSTGRES_DB}
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: "admin:admin"
+      PYTHONPATH: /opt/airflow
+      AIRFLOW__CORE__DAG_DISCOVERY_SAFE_MODE: "False"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./scripts:/opt/airflow/scripts
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+      - ./data:/opt/airflow/data
+    command: dag-processor
+
+networks:
+  airflow-network:
+    driver: bridge
+
 volumes:
   postgres:

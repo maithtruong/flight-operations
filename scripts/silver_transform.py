@@ -4,7 +4,7 @@ import json
 import pandas as pd
 import reverse_geocode as rg
 
-def run_silver_transform(**context):
+def run_silver_transform(context):
 
     '''
     Tranform the bronze dataset into a suitable schema.
