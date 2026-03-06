@@ -1,3 +1,14 @@
+# Airflow log files
+logs/*
+
+# Python cache
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+
+# Misc files
 test/*
 docs/*
+
+# Environment files
 .env
