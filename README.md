@@ -3,7 +3,7 @@
 A data engineering pipeline that tracks real-time global flight data using **Apache Airflow 2.9**, Docker, and a medallion architecture (Bronze → Silver → Gold).
 
 > **Note:** This is the stable, working version of the project using Airflow 2.9.
-> For the Airflow 3.x experimental version, see [flight-operations-ver3](../flight-operations-ver3).
+> For the Airflow 3.x experimental version, see [flight-operations--ver3](https://github.com/maithtruong/flight-operations/tree/ver3).
 
 ---
 
