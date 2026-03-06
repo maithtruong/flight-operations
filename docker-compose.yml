@@ -21,6 +21,7 @@ services:
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@airflow-postgres:5432/${POSTGRES_DB}
       PYTHONPATH: /opt/airflow
+      AIRFLOW__CORE__DAG_DISCOVERY_SAFE_MODE: False
     ports:
       - "8080:8080"
     volumes:
@@ -46,6 +47,7 @@ services:
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@airflow-postgres:5432/${POSTGRES_DB}
       AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: admin:admin
       PYTHONPATH: /opt/airflow
+      AIRFLOW__CORE__DAG_DISCOVERY_SAFE_MODE: False
     volumes:
       - ./dags:/opt/airflow/dags
       - ./scripts:/opt/airflow/scripts
