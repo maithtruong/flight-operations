@@ -433,3 +433,5 @@
 {"timestamp":"2026-03-06T10:33:21.597344Z","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/flight_pipeline.py","logger":"airflow.models.dagbag.DagBag","filename":"dagbag.py","lineno":593}
 {"timestamp":"2026-03-06T10:33:52.284456Z","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/flight_pipeline.py","logger":"airflow.models.dagbag.DagBag","filename":"dagbag.py","lineno":593}
 {"timestamp":"2026-03-06T10:34:22.919322Z","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/flight_pipeline.py","logger":"airflow.models.dagbag.DagBag","filename":"dagbag.py","lineno":593}
+{"timestamp":"2026-03-06T10:34:53.717794Z","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/flight_pipeline.py","logger":"airflow.models.dagbag.DagBag","filename":"dagbag.py","lineno":593}
+{"timestamp":"2026-03-06T10:35:24.408939Z","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/flight_pipeline.py","logger":"airflow.models.dagbag.DagBag","filename":"dagbag.py","lineno":593}
